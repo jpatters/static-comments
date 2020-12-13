@@ -1,0 +1,27 @@
+service: static-comments
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  profile: dnstools
+  runtime: nodejs12.x
+  region: us-east-2
+  stage: ${opt:stage, 'dev'}
+  apiGateway:
+    shouldStartNameWithService: true
+
+functions:
+  app:
+    handler: app/staticman.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+    environment:
+      GITHUB_TOKEN: ${env:STATICMAN_GITHUB_TOKEN}
+      RSA_PRIVATE_KEY: ${env:STATICMAN_RSA_PRIVATE_KEY}

@@ -1,0 +1,25 @@
+name: Deploy master branch
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install serverless
+      run: sudo npm install -g serverless@2.13.0
+    - name: Config credentials
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: sls config credentials --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+    - name: Deploy
+      env:
+        STATICMAN_GITHUB_TOKEN: ${{ secrets.STATICMAN_GITHUB_TOKEN}}
+        STATICMAN_RSA_PRIVATE_KEY: ${{ secrets.STATICMAN_RSA_PRIVATE_KEY}}
+      run: serverless deploy --stage prod

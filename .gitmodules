@@ -1,0 +1,3 @@
+[submodule "staticman"]
+	path = staticman
+	url = https://github.com/eduardoboucas/staticman.git
