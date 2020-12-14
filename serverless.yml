@@ -11,7 +11,7 @@ provider:
 
 functions:
   app:
-    handler: app/staticman.handler
+    handler: app/index.handler
     events:
       - http:
           path: /
